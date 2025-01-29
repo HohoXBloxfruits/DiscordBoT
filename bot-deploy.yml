@@ -1,0 +1,29 @@
+name: Discord Bot Deployment
+
+on:
+  push:
+    branches:
+      - main
+  # Trigger the workflow on a schedule (e.g., daily)
+  schedule:
+    - cron: '0 0 * * *'  # Runs daily at midnight
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run the bot
+        run: node index.js
+        env:
+          DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }}
